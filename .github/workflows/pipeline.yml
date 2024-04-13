@@ -1,0 +1,45 @@
+name: Build, Test and Deploy The Cookbook App
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v4
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: 'npm'
+    - name: Install NPM dependencies
+      run: npm install
+    - name: Start the app
+      run: npm start &
+    - name: Display SoftUni username
+      run: echo "slazy"
+      
+  run-unit-tests:
+
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v4
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: 'npm'
+    - name: Install NPM dependencies
+      run: npm install
+    - name: Run unit tests
+      run: npm run test:unit
